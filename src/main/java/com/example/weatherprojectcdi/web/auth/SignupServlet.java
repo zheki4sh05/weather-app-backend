@@ -23,6 +23,13 @@ public class SignupServlet extends HttpServlet{
     @Inject
     private ISessionService sessionService;
 
+    @Inject
+    @Named("RequestHandler")
+    private HttpRequestHandler httpRequestHandler;
+
+    @Inject
+    private IAuthBodyRequestProcessor authBodyRequestProcessor;
+
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -34,8 +41,7 @@ public class SignupServlet extends HttpServlet{
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
             try {
-
-                UserDTO userDTO = getFromReqBody(request);
+                UserDTO userDTO =authBodyRequestProcessor.getUserFromRequest(request, httpRequestHandler);
 
               authorizationService.create(userDTO);
 
@@ -61,16 +67,6 @@ public class SignupServlet extends HttpServlet{
 
     }
 
-    private UserDTO getFromReqBody(HttpServletRequest request) throws BadRequestException {
-
-        Optional<Object> userDTO = JsonMapper.mapFrom(request, UserDTO.class);
-
-        if(userDTO.isEmpty() || !((UserDTO)userDTO.get()).isNotEmpty())
-            throw new BadRequestException();
-
-       return (UserDTO) userDTO.get() ;
-
-    }
 
 
 }

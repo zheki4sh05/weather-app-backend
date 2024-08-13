@@ -22,6 +22,13 @@ public class LoginServlet extends HttpServlet {
     @Inject
     private  IAuthorizationService authorizationService;
 
+    @Inject
+    @Named("RequestHandler")
+    private HttpRequestHandler httpRequestHandler;
+
+    @Inject
+    private IAuthBodyRequestProcessor authBodyRequestProcessor;
+
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -30,10 +37,9 @@ public class LoginServlet extends HttpServlet {
 
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-
-        UserDTO userDTO = UserDTO.builder().email(req.getParameter("email")).password(req.getParameter("password")).build();
-
         try {
+            UserDTO userDTO = authBodyRequestProcessor.getUserFromRequest(req, httpRequestHandler);
+
             User user = authorizationService.find(userDTO).orElseThrow(UserNotFoundException::new);
 
             UUID uuid = sessionService.createByUser(user);
@@ -47,6 +53,8 @@ public class LoginServlet extends HttpServlet {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
         } catch (InternalServerErrorException e) {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        } catch (BadRequestException e) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
         }
 
 

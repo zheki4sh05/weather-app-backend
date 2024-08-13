@@ -10,7 +10,7 @@ import jakarta.inject.*;
 import jakarta.servlet.http.*;
 
 import java.util.*;
-
+@Singleton
 public class UserServiceImpl implements IUserService {
 
     @Inject

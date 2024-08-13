@@ -3,10 +3,17 @@ package com.example.weatherprojectcdi.dao;
 
 
 import com.example.weatherprojectcdi.entity.*;
+import jakarta.inject.*;
+import jakarta.persistence.*;
 
 import java.util.*;
 
 public class SessionDao extends BaseDao{
+
+
+    public SessionDao(EntityManager entityManager){
+        super(entityManager);
+    }
 
 
 //    public void save(Session session) throws InternalServerErrorException{

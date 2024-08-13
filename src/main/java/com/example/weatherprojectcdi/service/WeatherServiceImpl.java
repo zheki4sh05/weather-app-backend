@@ -14,17 +14,18 @@ import java.io.*;
 import java.net.http.*;
 import java.util.*;
 
-@Named("weatherService")
-@ApplicationScoped
+@Singleton
 public class WeatherServiceImpl implements IWeatherService, Serializable {
 
     private final String SERVICE_API_KEY = "d1a151c70a3c897f2630de0b0b101e9f";
 
+    @Inject
+    @Named("RequestHandler")
+    private HttpRequestHandler httpRequestHandler;
+
     private Optional<ForecastDto> makeRequest(String path) throws BadRequestException {
 
-        HttpRequestHandler httpRequestHandler = HttpRequestHandler.builder().path(path).build();
-
-        HttpResponse<String> response =  httpRequestHandler.get();
+        HttpResponse<String> response =  httpRequestHandler.get(path);
 
         int resultCode = response.statusCode();
 

@@ -9,7 +9,7 @@ import com.example.weatherprojectcdi.interfaces.*;
 import jakarta.inject.*;
 
 import java.util.*;
-
+@Singleton
 public class AuthorizationServiceImpl implements IAuthorizationService {
 
     @Inject
@@ -38,7 +38,7 @@ public class AuthorizationServiceImpl implements IAuthorizationService {
 
         User isExist = authDao.findByEmail(userDTO.getEmail());
 
-        return Optional.of(isExist);
+        return Optional.ofNullable(isExist);
 
     }
 

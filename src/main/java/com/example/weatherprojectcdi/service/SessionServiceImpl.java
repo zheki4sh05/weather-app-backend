@@ -14,6 +14,7 @@ import java.time.*;
 import java.time.chrono.*;
 import java.util.*;
 
+@Singleton
 public class SessionServiceImpl implements ISessionService {
 
     @Inject

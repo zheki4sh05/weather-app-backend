@@ -12,12 +12,12 @@ public abstract class BaseDao {
 
     protected EntityManager em;
 
-    public BaseDao() {
-    }
+    public BaseDao(){};
 
-    @Inject
     public BaseDao(EntityManager em) {
+        System.out.println("start");
         this.em = em;
+        System.out.println("finish");
     }
 
 //    public BaseDao() {

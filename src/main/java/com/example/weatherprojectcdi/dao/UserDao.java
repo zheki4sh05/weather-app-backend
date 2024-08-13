@@ -3,6 +3,7 @@ package com.example.weatherprojectcdi.dao;
 
 import com.example.weatherprojectcdi.entity.*;
 import com.example.weatherprojectcdi.exception.*;
+import jakarta.inject.*;
 import jakarta.persistence.*;
 
 import java.util.*;
@@ -10,6 +11,9 @@ import java.util.*;
 public class UserDao extends BaseDao{
 
 
+    public UserDao(EntityManager entityManager){
+        super(entityManager);
+    }
 
     public List<Location> findAllLocationsByUserId(Long id) {
 

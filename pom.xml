@@ -65,11 +65,14 @@
           <scope>test</scope>
       </dependency>
       <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+      <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
       <dependency>
           <groupId>org.postgresql</groupId>
           <artifactId>postgresql</artifactId>
-          <version>42.7.3</version>
+          <version>42.7.2</version>
       </dependency>
+
+
       <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
       <dependency>
           <groupId>org.mockito</groupId>
@@ -83,6 +86,7 @@
           <version>5.3.1</version>
           <scope>test</scope>
       </dependency>
+
 
 
   </dependencies>

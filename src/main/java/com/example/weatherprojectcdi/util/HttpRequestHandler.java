@@ -1,23 +1,28 @@
 package com.example.weatherprojectcdi.util;
 
+import com.example.weatherprojectcdi.dto.*;
+import com.example.weatherprojectcdi.exception.*;
+import jakarta.inject.*;
 import jakarta.servlet.http.*;
 import lombok.*;
 
+import javax.swing.text.html.*;
 import java.net.*;
 import java.net.http.*;
 import java.util.*;
 import java.util.concurrent.*;
 
-@Builder
+@Named("RequestHandler")
 public class HttpRequestHandler {
+    public HttpRequestHandler() {
 
-    private final String path;
+    }
 
-    public HttpResponse<String> get(){
+    public HttpResponse<String> get(String path){
 
         try {
 
-            HttpRequest newRequest = createHttpRequest();
+            HttpRequest newRequest = createHttpRequest(path);
 
             return makeRequest(newRequest);
 
@@ -30,15 +35,21 @@ public class HttpRequestHandler {
 
     private HttpResponse<String> makeRequest(HttpRequest newRequest) throws ExecutionException, InterruptedException {
 
-        CompletableFuture<HttpResponse<String>> response = HttpClient.newBuilder()
-                .build()
-                .sendAsync(newRequest, HttpResponse.BodyHandlers.ofString());
+        HttpClient httpClient = HttpClient.newBuilder()
+                    .build();
+            CompletableFuture<HttpResponse<String>> response = httpClient.sendAsync(newRequest, HttpResponse.BodyHandlers.ofString());
+           // httpClient.close();
+            return response.get();
 
-        return response.get();
+
+//        CompletableFuture<HttpResponse<String>> response = HttpClient.newBuilder()
+//                .build()
+//                .sendAsync(newRequest, HttpResponse.BodyHandlers.ofString());
+
 
     }
 
-    private HttpRequest createHttpRequest() throws URISyntaxException {
+    private HttpRequest createHttpRequest(String path) throws URISyntaxException {
 
         return HttpRequest.newBuilder()
                 .uri(new URI(path))
@@ -53,6 +64,14 @@ public class HttpRequestHandler {
         return Arrays.stream(cookies)
                 .filter(item -> item.getName().equals(UrlPath.COOKIE_NAME)).findFirst();
     }
+
+    public <T> Optional<Object> parseRequestBody(HttpServletRequest request, Class<T> clazz){
+
+            return JsonMapper.mapFrom(request, clazz);
+
+
+        }
+
 
 
 }

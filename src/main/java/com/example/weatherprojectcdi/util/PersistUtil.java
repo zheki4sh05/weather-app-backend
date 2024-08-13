@@ -6,36 +6,37 @@ import jakarta.persistence.*;
 
 public class PersistUtil {
 
-    private static final EntityManagerFactory EMF;
+    private static final EntityManagerFactory EMF = Persistence.createEntityManagerFactory("org.hibernate.tutorial.jpa");
 
-    @Inject
-    @DataBaseScemaQualifier
-    private String nameDefault;
+//    @Inject
+//    @DataBaseScemaQualifier
+//    private String nameDefault;
 
-    static {
-//        Map<String, String> configOverrides = new HashMap<>();
+//    static {
+////        Map<String, String> configOverrides = new HashMap<>();
+////
+////        Configuration configuration = new Configuration().configure();
+////
+////
+////        Properties props =configuration.getProperties();
+////
+////        String url =props.getProperty("connection.url");
+////        String user = props.getProperty("connection.username");
+////        String password = props.getProperty("connection.password");
+////        String driver = props.getProperty("connection.driver_class");
+//////        String dialect = props.getProperty("hibernate.dialect");
+////
+////        configOverrides.put("jakarta.persistence.jdbc.url", url);
+////        configOverrides.put("jakarta.persistence.jdbc.user", user);
+////        configOverrides.put("jakarta.persistence.jdbc.password", password);
+////        configOverrides.put("jakarta.persistence.jdbc.driver", driver);
+//////        configOverrides.put("hibernate.dialect", dialect);
 //
-//        Configuration configuration = new Configuration().configure();
-//
-//
-//        Properties props =configuration.getProperties();
-//
-//        String url =props.getProperty("connection.url");
-//        String user = props.getProperty("connection.username");
-//        String password = props.getProperty("connection.password");
-//        String driver = props.getProperty("connection.driver_class");
-////        String dialect = props.getProperty("hibernate.dialect");
-//
-//        configOverrides.put("jakarta.persistence.jdbc.url", url);
-//        configOverrides.put("jakarta.persistence.jdbc.user", user);
-//        configOverrides.put("jakarta.persistence.jdbc.password", password);
-//        configOverrides.put("jakarta.persistence.jdbc.driver", driver);
-////        configOverrides.put("hibernate.dialect", dialect);
-
-        EMF =  Persistence.createEntityManagerFactory("org.hibernate.tutorial.jpa");
-    }
+//        EMF =  Persistence.createEntityManagerFactory("org.hibernate.tutorial.jpa");
+//    }
 
     public static EntityManager getEntityManager() {
+        System.out.println("starting");
         return EMF.createEntityManager();
     }
 

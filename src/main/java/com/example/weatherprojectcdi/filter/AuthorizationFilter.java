@@ -14,6 +14,8 @@ import java.util.*;
 @WebFilter("/*")
 public class AuthorizationFilter implements Filter {
 
+    public AuthorizationFilter(){};
+
     @Inject
     private ISessionService sessionService;
     private static final Set<String> PUBLIC_PATH;

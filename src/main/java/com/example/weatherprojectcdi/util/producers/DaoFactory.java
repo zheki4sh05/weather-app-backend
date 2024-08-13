@@ -8,9 +8,9 @@ import jakarta.persistence.*;
 
 public class DaoFactory {
 
-//    private EntityManager getEmf(){
-//        return PersistUtil.getEntityManager();
-//    }
+    private EntityManager getEmf(){
+        return PersistUtil.getEntityManager();
+    }
 
     @Produces
     public EntityManager configureManager(){
@@ -20,19 +20,19 @@ public class DaoFactory {
     @Produces
     @Named("Auth")
     public AuthDao configureAuthDao(){
-        return new AuthDao();
+        return new AuthDao(getEmf());
     }
 
     @Produces
     @Named("Session")
     public SessionDao configureSessionDao(){
-        return new SessionDao();
+        return new SessionDao(getEmf());
     }
 
     @Produces
     @Named("User")
     public UserDao configureUserDao(){
-        return new UserDao();
+        return new UserDao(getEmf());
     }
 
 

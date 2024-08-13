@@ -7,7 +7,13 @@ import jakarta.persistence.*;
 @Singleton
 public class AuthDao extends BaseDao{
 
+    public AuthDao() {
+        super();
+    }
 
+    public AuthDao(EntityManager entityManager){
+        super(entityManager);
+    }
     public User findByEmail(String email){
 
 
