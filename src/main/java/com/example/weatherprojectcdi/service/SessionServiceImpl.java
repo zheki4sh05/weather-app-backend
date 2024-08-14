@@ -55,9 +55,7 @@ public class SessionServiceImpl implements ISessionService {
             return false;
         }
 
-        Boolean isTrue =  session.getExpiresAt().isAfter(ChronoLocalDateTime.from(LocalDateTime.now()));
-
-        return isTrue;
+        return session.getExpiresAt().isAfter(ChronoLocalDateTime.from(LocalDateTime.now()));
     }
     @Override
 

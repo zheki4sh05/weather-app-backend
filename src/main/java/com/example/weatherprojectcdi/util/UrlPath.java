@@ -8,6 +8,7 @@ public class UrlPath {
     public static final String WEATHER = "/weather";
 
     public static final String COOKIE_NAME = "weather-app";
+    public static final String COOKIE_USER = "user";
 
 
 }

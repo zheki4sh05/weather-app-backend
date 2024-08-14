@@ -8,7 +8,7 @@ import jakarta.servlet.http.*;
 
 import java.util.*;
 
-public class BodyProcessor implements IAuthBodyRequestProcessor {
+public class BodyProcessor implements IAuthBodyRequestProcessor,ILocationBodyProcessor {
 
     public BodyProcessor() {
 
@@ -34,5 +34,15 @@ public class BodyProcessor implements IAuthBodyRequestProcessor {
     @Override
     public UserDTO getUserFromRequest(HttpServletRequest request , HttpRequestHandler httpRequestHandler) throws BadRequestException {
         return checkIfBodyIsNotEmpty(getFromReqBody(request, httpRequestHandler));
+    }
+
+    @Override
+    public LocationDto getLocationFromRequest(HttpServletRequest request, HttpRequestHandler httpRequestHandler) throws BadRequestException {
+
+        Optional<Object> obj = httpRequestHandler.parseRequestBody(request, LocationDto.class);
+
+        return obj.map(o -> (LocationDto) o).orElseGet(LocationDto::new);
+
+
     }
 }

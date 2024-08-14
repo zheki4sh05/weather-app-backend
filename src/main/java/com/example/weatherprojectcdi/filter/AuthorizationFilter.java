@@ -5,17 +5,16 @@ import com.example.weatherprojectcdi.interfaces.*;
 import com.example.weatherprojectcdi.util.*;
 import jakarta.inject.*;
 import jakarta.servlet.*;
+import jakarta.servlet.Filter;
 import jakarta.servlet.annotation.*;
 import jakarta.servlet.http.*;
+import org.hibernate.annotations.*;
 
 import java.io.*;
 import java.util.*;
 
-@WebFilter("/*")
+@WebFilter(filterName = "AUTH", urlPatterns = "/*")
 public class AuthorizationFilter implements Filter {
-
-    public AuthorizationFilter(){};
-
     @Inject
     private ISessionService sessionService;
     private static final Set<String> PUBLIC_PATH;
@@ -27,8 +26,10 @@ public class AuthorizationFilter implements Filter {
     }
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        String uri = ((HttpServletRequest) servletRequest).getRequestURI();
-        if(isPublicPath(uri) || isSessionActive(servletRequest)){
+        System.out.println("auth");
+        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+        String uri =  httpServletRequest.getRequestURI();
+        if(isPublicPath(uri) || isSessionActive(httpServletRequest)){
             filterChain.doFilter(servletRequest,servletResponse);
         }else{
             ((HttpServletResponse) servletResponse).sendError(HttpServletResponse.SC_UNAUTHORIZED);
@@ -38,9 +39,9 @@ public class AuthorizationFilter implements Filter {
 //        return user!=null;
 //    }
 
-    private boolean isSessionActive(ServletRequest servletRequest) {
+    private boolean isSessionActive(HttpServletRequest servletRequest) {
 
-        Optional<Cookie> cookie = HttpRequestHandler.getSessionCookie((HttpServletRequest) servletRequest);
+        Optional<Cookie> cookie = HttpRequestHandler.getSessionCookie(servletRequest);
 
         return sessionService.isSessionActiveBy(cookie);
 

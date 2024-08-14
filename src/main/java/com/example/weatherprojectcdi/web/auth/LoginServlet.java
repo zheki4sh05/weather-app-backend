@@ -44,9 +44,10 @@ public class LoginServlet extends HttpServlet {
 
             UUID uuid = sessionService.createByUser(user);
 
-            Cookie cookie = new Cookie(COOKIE_NAME, uuid.toString());
-
-            resp.addCookie(cookie);
+            Cookie cookie1 = new Cookie(COOKIE_NAME, uuid.toString());
+            resp.addCookie(cookie1);
+            Cookie cookie2 = new Cookie(COOKIE_USER, user.getEmail());
+            resp.addCookie(cookie2);
             resp.setStatus(200);
 
         } catch (UserNotFoundException e) {

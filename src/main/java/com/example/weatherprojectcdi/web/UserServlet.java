@@ -25,6 +25,12 @@ public class UserServlet extends HttpServlet {
     @Inject
     private IUserService userService;
 
+    @Inject
+    private ILocationBodyProcessor locationBodyProcessor;
+
+    @Inject
+    private HttpRequestHandler httpRequestHandler;
+
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -46,15 +52,11 @@ public class UserServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try{
-            LocationDto locationDto = LocationDto.builder()
-                    .lat(Double.parseDouble(request.getParameter("lat")))
-                    .lon(Double.parseDouble(request.getParameter("lon")))
-                    .name(request.getParameter("name"))
-                    .build();
+            LocationDto locationDto = locationBodyProcessor.getLocationFromRequest(request, httpRequestHandler);
 
             userService.save(locationDto, request);
 
-        }catch (NumberFormatException e){
+        }catch (NumberFormatException | BadRequestException e){
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
         } catch (InternalServerErrorException e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
