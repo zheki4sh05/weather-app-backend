@@ -82,7 +82,6 @@ public class WeatherServiceImpl implements IWeatherService, Serializable {
         return forecastDto;
     }
 
-
     @Override
     public List<ForecastDto> getForecastByAll(List<LocationDto> locationsDtoList) {
 
@@ -93,6 +92,28 @@ public class WeatherServiceImpl implements IWeatherService, Serializable {
         });
 
         return forecastDtoList;
+
+    }
+
+    @Override
+    public Optional<LongForecastDto> getLongForecastByCityLonLat(String name) {
+
+        HttpResponse<String> response =  httpRequestHandler.get(OpenWeatherUrlHandler.builder()
+                        .countryName(name)
+                        .unit(Units.METRIC.getValue())
+                        .type(ApiTypes.FORECAST.getValue())
+                .build().buildApiUrl());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return Optional.of(objectMapper.readValue(response.body(), LongForecastDto.class));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+
+
+
 
     }
 

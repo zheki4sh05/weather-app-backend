@@ -14,5 +14,5 @@ public interface IWeatherService {
      List<ForecastDto> getForecastByAll(List<LocationDto> locationsDtoList);
 
 
-
+    Optional<LongForecastDto> getLongForecastByCityLonLat(String name);
 }
